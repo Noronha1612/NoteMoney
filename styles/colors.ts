@@ -3,4 +3,8 @@ export const colors = {
     green: '#44BD32',
     red: '#E84118',
     yellow: '#FBC531',
+    shape: '#718093',
+    textGreen: '#009432',
+    textGreenLight: '#A3CB38',
+    white: '#FFF'
 }

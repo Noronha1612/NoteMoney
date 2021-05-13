@@ -17,7 +17,7 @@ import { colors } from './styles/colors';
 
 const Container = styled.View`
   flex: 1;
-  padding-top: 40px;
+  padding-top: 48px;
   background-color: ${ colors.background };
 `;
 

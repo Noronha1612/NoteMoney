@@ -6,5 +6,6 @@ export const colors = {
     shape: '#718093',
     textGreen: '#009432',
     textGreenLight: '#A3CB38',
-    white: '#FFF'
+    white: '#FFF',
+    text: '#FFF'
 }

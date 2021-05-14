@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../../../styles/colors';
 import { fonts } from '../../../styles/fonts';
@@ -15,7 +16,7 @@ export const Header = styled.View`
 
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 48px;
+    padding: 0 32px;
 `;
 
 export const LogoContainer = styled.View`
@@ -47,4 +48,9 @@ export const ThemeSwitcher = styled.View`
     height: 100%;
     flex-direction: row;
     align-items: center;
+`;
+
+export const Content = styled.View`
+    flex: 1;
+    padding: 32px;
 `;

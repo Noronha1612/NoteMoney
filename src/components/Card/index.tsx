@@ -29,12 +29,10 @@ const Card: React.FC<CardProps> = ({ item }) => {
 
     const formatPercentage = (value: number) => {
         const valueParts = String(value * 100).split('.') // Ex 12.4912 == [ '12', '4912' ]
-        console.log(valueParts);
 
         if ( valueParts.length === 1 ) return value * 100;
         
         valueParts[1] = valueParts[1].slice(0, 2);
-        console.log(valueParts);
 
         return valueParts.join('.');
     }

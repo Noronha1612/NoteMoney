@@ -5,11 +5,18 @@ import {
     Container, Content,
 } from './styles';
 import { colors } from '../../../styles/colors';
+import { useNavigation } from '@react-navigation/core';
 
 const AddButton: React.FC = () => {
+    const navigation = useNavigation();
+    
+    const handleAddCard = () => {
+        navigation.navigate('AddCard');
+    }
+
     return (
         <Container>
-            <Content>
+            <Content onPress={handleAddCard}>
                 <Feather name='plus' size={ 48 } color={ colors.shape } />
             </Content>
         </Container>

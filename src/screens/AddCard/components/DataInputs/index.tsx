@@ -12,13 +12,18 @@ interface DataInputsProps {
         [Property in keyof ICardWithoutId]: string;
     };
     savingStyle?: boolean;
-    onValueChange?: (value: string) => void;
-    onGoalChange?: (value: string) => void;
+    onValueChange: (value: string) => void;
+    onGoalChange: (value: string) => void;
     onDayChange?: (value: string) => void;
     
 }
 
 const DataInputs: React.FC<DataInputsProps> = ({ currentCard, savingStyle, onValueChange, onGoalChange, onDayChange }) => {
+
+    const handleChangeValue = (value: string) => {
+        onValueChange(value);
+        if ( !savingStyle ) onGoalChange(value);
+    }
 
     return (
         <>
@@ -26,7 +31,7 @@ const DataInputs: React.FC<DataInputsProps> = ({ currentCard, savingStyle, onVal
                 <InputLabel>{ savingStyle ? 'Initial value' : 'Revenue' }: </InputLabel>
                 <NumberInput 
                     value={ currentCard.currentValue } 
-                    onChangeText={ onValueChange } 
+                    onChangeText={ handleChangeValue } 
                     keyboardType="number-pad" 
                     placeholder={ savingStyle ? '125.00' : '2000.00' } 
                 />

@@ -8,5 +8,6 @@ export const colors = {
     textGreen: '#009432',
     textGreenLight: '#A3CB38',
     white: '#FFF',
-    text: '#FFF'
+    text: '#FFF',
+    textLowContrast: '#7F8FA6'
 }

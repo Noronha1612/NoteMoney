@@ -1,4 +1,5 @@
 import { Reducer } from "redux";
+
 import { CardsActions, CardsData, ICard } from "./types";
 
 const reducer: Reducer<CardsData> = (state, action) => {
@@ -11,7 +12,7 @@ const reducer: Reducer<CardsData> = (state, action) => {
             return [ ...state, cardToAdd ];
 
         case CardsActions.DeleteCard:
-            const cardToDeleteId: string = action.payload;
+            const cardToDeleteId: number = action.payload;
 
             return state.filter(card => card.id !== cardToDeleteId);
 

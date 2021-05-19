@@ -1,5 +1,5 @@
 import { Picker } from '@react-native-community/picker';
-import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import { colors } from '../../../styles/colors';
 import { fonts } from '../../../styles/fonts';

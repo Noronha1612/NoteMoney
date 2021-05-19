@@ -15,10 +15,10 @@ import {
 } from './styles';
 import { colors } from '../../../styles/colors';
 
-import { ICard } from '../../types';
-
 import Card from '../../components/Card';
 import AddButton from '../../components/AddButton';
+
+import { ICard } from '../../store/Cards/types';
 
 import { AsyncStore } from '../../services/asyncStore';
 const asyncStore = new AsyncStore();

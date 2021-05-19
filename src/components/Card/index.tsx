@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { colors } from '../../../styles/colors';
-import { ICard } from '../../types';
+import { ICard } from '../../store/Cards/types';
 
 import { 
     BalanceSituation,

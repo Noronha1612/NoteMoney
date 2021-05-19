@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICard } from '../../../../types';
+import { ICardWithoutId } from '../../../../store/Cards/types';
 
 import { 
     InputLabel, 
@@ -9,7 +9,7 @@ import {
 
 interface DataInputsProps {
     currentCard: {
-        [Property in keyof ICard]: string;
+        [Property in keyof ICardWithoutId]: string;
     };
     savingStyle?: boolean;
     onValueChange?: (value: string) => void;

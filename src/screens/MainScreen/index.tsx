@@ -14,6 +14,7 @@ import {
     Content
 } from './styles';
 import { colors } from '../../../styles/colors';
+import LogoSvg from '../../assets/svgs/logoSvg';
 
 import Card from '../../components/Card';
 import AddButton from '../../components/AddButton';
@@ -42,11 +43,7 @@ const MainScreen: React.FC = () => {
         <Container>
             <Header>
                 <LogoContainer>
-                    <FontAwesome
-                        name="edit"
-                        size={ 48 }
-                        color={ colors.green }
-                    />
+                    <LogoSvg />
                     <TitleWrapper>
                         <Title>Note Money</Title>
                         <TitleDescription>

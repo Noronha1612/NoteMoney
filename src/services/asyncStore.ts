@@ -1,32 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ICard } from "../types";
+import { ICard } from "../store/Cards/types";
 
 export class AsyncStore {
     private readonly _storageKey = '@notemoney/cards';
 
     async getList(): Promise<ICard[]> {
-        try {
-            const cardListStr = await AsyncStorage.getItem(this._storageKey);
-        
-            return cardListStr 
-                ? JSON.parse(cardListStr) as ICard[]
-                : [];
-        } catch(err) {
-            console.log(err);
-            return [];
-        }
+        const list = await AsyncStorage.getItem(this._storageKey);
+
+        if ( !list ) return [];
+        return JSON.parse(list);
     }
 
-    async store(card: ICard): Promise<void> {
+    async setList(list: ICard[]): Promise<void> {
         try {
-            const oldCardList = await this.getList();
-
-            await AsyncStorage.setItem(
-                this._storageKey, 
-                JSON.stringify([...oldCardList, card])
-            );
-
-        } catch(err) {
+            await AsyncStorage.removeItem(this._storageKey);
+            await AsyncStorage.setItem(this._storageKey, JSON.stringify(list));
+        } catch (err) {
             console.log(err);
         }
     }

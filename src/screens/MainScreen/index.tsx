@@ -19,20 +19,12 @@ import Card from '../../components/Card';
 import AddButton from '../../components/AddButton';
 
 import { ICard } from '../../store/Cards/types';
-
-import { AsyncStore } from '../../services/asyncStore';
-const asyncStore = new AsyncStore();
+import { useSelector } from 'react-redux';
+import { ApplicationStore } from '../../store';
 
 const MainScreen: React.FC = () => {
     const [ theme, setTheme ] = useState<'dark' | 'light'>('dark');
-    const [ cardList, setCardList ] = useState<ICard[]>([]);
-
-    // Load cardList
-    useEffect(() => {
-        asyncStore.getList().then(cardListResponse => {
-            setCardList(cardListResponse)
-        });
-    }, []);
+    const cardList = useSelector((store: ApplicationStore) => store.cards);
 
     const toggleTheme = (value: boolean) => {
         if ( value ) setTheme('dark');

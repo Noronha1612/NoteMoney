@@ -4,6 +4,7 @@ import { Picker } from '@react-native-community/picker';
 import { Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ItemValue } from '@react-native-community/picker/typings/Picker';
+import { useNavigation } from '@react-navigation/core';
 
 import { 
     ButtonText,
@@ -20,11 +21,16 @@ import {
 
 import { colors } from '../../../styles/colors';
 import { fonts } from '../../../styles/fonts';
+
 import DataInputs from './components/DataInputs';
-import { ICard, ICardType } from '../../types';
+
+import { ICard, ICardType, ICardWithoutId } from '../../store/Cards/types';
+import CardsController from '../../store/Cards/controller';
+
+import generateId from '../../utils/generateId';
 
 const AddCard: React.FC = () => {
-
+    const navigation = useNavigation();
     
     const [ title, setTitle ] = useState('');
     const [ initialValueStr, setInitialValueStr ] = useState('');
@@ -33,13 +39,23 @@ const AddCard: React.FC = () => {
     const [ cardType, setCardType ] = useState<ICardType>('');
     const [ cardTypeLabel, setCardTypeLabel ] = useState('Control type');
     
-    const [ card, setCard ] = useState<ICard>({
+    const [ cardWithoutId, setCardWithoutId ] = useState<ICardWithoutId>({
         title,
         currentValue: Number(initialValueStr),
         referralValue: Number(referralValueStr),
         type: '',
         replenishmentDay: undefined
     });
+
+    useEffect(() => {
+        setCardWithoutId({
+            title,
+            currentValue: Number(initialValueStr),
+            referralValue: Number(referralValueStr),
+            type: cardType,
+            replenishmentDay: replenishmentDay ? Number(replenishmentDay) : undefined
+        });
+    }, [ title, initialValueStr, referralValueStr, replenishmentDay, cardType ]);
 
     const handleChangeCardType = (value: ICardType) => {
         setCardType(value);
@@ -64,33 +80,46 @@ const AddCard: React.FC = () => {
         else setReplenishmentDay(value);
     }
 
+    const handleAddCard = async () => {
+        const cardToAdd: ICard = {
+            ...cardWithoutId,
+            id: generateId()
+        };
+
+        await CardsController.addCard(cardToAdd);
+        
+        navigation.navigate('AddConfirmation');
+        
+        // Return to main screen
+        setTimeout(() => {
+            navigation.goBack();
+            navigation.goBack();
+        }, 2000);
+    };
+
     const isCardFilled = () => {
         let isFilled = true;
 
-        Object.keys(card)
-        .filter((key) => card.type !== 'saving' || key !== 'replenishmentDay' )
-        .forEach((key) => {
-            const cardKey = key as keyof ICard;
+        console.log(cardWithoutId);
 
-            if ( !card[cardKey] ) isFilled = false;
+        Object.keys(cardWithoutId)
+        .filter((key) => key !== 'currentValue' )
+        .filter((key) => cardWithoutId.type !== 'saving' || key !== 'replenishmentDay' )
+        .forEach((key) => {
+            const cardKey = key as keyof ICardWithoutId;
+
+            if ( !cardWithoutId[cardKey] ) isFilled = false;
         });
 
         return isFilled;
     }
 
-    useEffect(() => {
-        setCard({
-            title,
-            currentValue: Number(initialValueStr),
-            referralValue: Number(referralValueStr),
-            type: cardType,
-            replenishmentDay: replenishmentDay ? Number(replenishmentDay) : undefined
-        });
-    }, [ title, initialValueStr, referralValueStr, replenishmentDay, cardType ]);
-
+    
     return (
         <Container>
-            <ReturnButton>
+            <ReturnButton
+                onPress={ () => navigation.goBack() }
+            >
                 <Feather name='chevron-left' color={ colors.text } size={ 32 } />
             </ReturnButton>
 
@@ -124,7 +153,7 @@ const AddCard: React.FC = () => {
                         !!cardType && 
                         <DataInputs
                             currentCard={{ 
-                                ...card, 
+                                ...cardWithoutId, 
                                 currentValue: initialValueStr, 
                                 referralValue: referralValueStr,
                                 replenishmentDay
@@ -138,7 +167,7 @@ const AddCard: React.FC = () => {
 
                     <ButtonWrapper>
                         <SaveButton 
-                            onPress={ () => { console.log(card) } }
+                            onPress={ handleAddCard }
                             disabled={ !isCardFilled() }
                             activeOpacity={.75}
                         >

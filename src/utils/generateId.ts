@@ -1,21 +1,9 @@
-import crypto from 'crypto';
 import store from '../store';
 
-export default function generateId(): string {
-    let id: string;
+export default function generateId(): number {
+    const { cards } = store.getState();
 
-    while(true) {
-        id = crypto.randomBytes(16).toString('hex');
+    if ( cards.length === 0 ) return 1;
 
-        let idAlreadyExist = false;
-
-        const { cards } = store.getState();
-        cards.forEach((card) => {
-            if ( card.id === id ) idAlreadyExist = true;
-        });
-
-        if ( !idAlreadyExist ) break;
-    }
-
-    return id;
+    return cards[cards.length - 1].id + 1;
 }

@@ -19,7 +19,6 @@ import { colors } from './styles/colors';
 
 import store from './src/store';
 
-
 const Container = styled.View`
   flex: 1;
   padding-top: 48px;

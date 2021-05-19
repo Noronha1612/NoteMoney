@@ -19,7 +19,7 @@ import { colors } from './styles/colors';
 
 import store from './src/store';
 import { AsyncStore } from './src/services/asyncStore';
-import CardsController from './src/store/Cards/controller';
+import { add_card } from './src/store/Cards/actions';
 
 const Container = styled.View`
   flex: 1;
@@ -46,7 +46,7 @@ export default function App() {
       const asyncStorageList = await asyncStore.getList();
 
       asyncStorageList.forEach(card => {
-        CardsController.addCard(card);
+        store.dispatch(add_card(card));
       });
 
       setStoreLoaded(true);

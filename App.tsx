@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import styled from 'styled-components/native';
 import { useFonts } from 'expo-font';
@@ -18,6 +18,8 @@ import Routes from './src/routes';
 import { colors } from './styles/colors';
 
 import store from './src/store';
+import { AsyncStore } from './src/services/asyncStore';
+import CardsController from './src/store/Cards/controller';
 
 const Container = styled.View`
   flex: 1;
@@ -35,14 +37,32 @@ export default function App() {
     Roboto_700Bold
   });
 
+  const [ storeLoaded, setStoreLoaded ] = useState(false);
+
+  useEffect(() => {
+    const syncAsyncStorageWithReduxStore = async () => {
+      const asyncStore = new AsyncStore();
+
+      const asyncStorageList = await asyncStore.getList();
+
+      asyncStorageList.forEach(card => {
+        CardsController.addCard(card);
+      });
+
+      setStoreLoaded(true);
+    };
+
+    syncAsyncStorageWithReduxStore();
+  }, []);
+
   return (
     <Provider store={ store }>
       <Container>
         <StatusBar style="auto" />
         {
-          !fontsLoaded 
-          ? <Loading />
-          : <Routes />
+          fontsLoaded && storeLoaded
+          ? <Routes />
+          : <Loading />
         }
       </Container>
     </Provider>

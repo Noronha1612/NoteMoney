@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ListRenderItem } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { FlatList, Switch } from 'react-native-gesture-handler';
 
@@ -13,19 +14,25 @@ import {
     Content
 } from './styles';
 import { colors } from '../../../styles/colors';
-import { ListRenderItem } from 'react-native';
+
 import { ICard } from '../../types';
+
 import Card from '../../components/Card';
 import AddButton from '../../components/AddButton';
 
+import { AsyncStore } from '../../services/asyncStore';
+const asyncStore = new AsyncStore();
+
 const MainScreen: React.FC = () => {
     const [ theme, setTheme ] = useState<'dark' | 'light'>('dark');
-    const [ cardList, setCardList ] = useState<ICard[]>([
-        { currentValue: 123.8, referralValue: 200, title: 'Mesada' },
-        { currentValue: 123.8, referralValue: 100, title: 'Mesada 2' },
-        { currentValue: -23, referralValue: 250, title: 'Limite cartão' },
-        { currentValue: 8, referralValue: 150, title: 'Limite cartão 2' },
-    ]);
+    const [ cardList, setCardList ] = useState<ICard[]>([]);
+
+    // Load cardList
+    useEffect(() => {
+        asyncStore.getList().then(cardListResponse => {
+            setCardList(cardListResponse)
+        });
+    }, []);
 
     const toggleTheme = (value: boolean) => {
         if ( value ) setTheme('dark');
@@ -34,7 +41,7 @@ const MainScreen: React.FC = () => {
 
     const renderCard: ListRenderItem<ICard> = ({ item, index }) => {
         if ( index === cardList.length )
-            return <AddButton />
+            return <AddButton  />
 
         return <Card item={ item } />;
     }

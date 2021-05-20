@@ -33,7 +33,7 @@ const DataInputs: React.FC<DataInputsProps> = ({ currentCard, savingStyle, onVal
                     value={ currentCard.currentValue } 
                     onChangeText={ handleChangeValue } 
                     keyboardType="number-pad" 
-                    placeholder={ savingStyle ? '125.00' : '2000.00' } 
+                    placeholder={ savingStyle ? '0' : '2000.00' } 
                 />
             </NumberInputWrapper>
             <NumberInputWrapper>

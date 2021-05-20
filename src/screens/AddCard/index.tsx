@@ -100,8 +100,6 @@ const AddCard: React.FC = () => {
     const isCardFilled = () => {
         let isFilled = true;
 
-        console.log(cardWithoutId);
-
         Object.keys(cardWithoutId)
         .filter((key) => key !== 'currentValue' )
         .filter((key) => cardWithoutId.type !== 'saving' || key !== 'replenishmentDay' )

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useNavigation } from '@react-navigation/core';
 import { colors } from '../../../styles/colors';
 import { ICard } from '../../store/Cards/types';
 
@@ -11,12 +12,15 @@ import {
     Content,
     TitleWrapper
 } from './styles';
+import { calculateCardPercentage } from '../../utils/calculateCardPercentage';
 
 interface CardProps {
     item: ICard;
 }
 
 const Card: React.FC<CardProps> = ({ item }) => {
+    const navigation = useNavigation();
+
     const percentage = useMemo(() => {
         return item.currentValue / item.referralValue
     }, [ item ]);
@@ -27,29 +31,25 @@ const Card: React.FC<CardProps> = ({ item }) => {
         return colors.green;
     }, [  percentage ]);
 
-    const formatPercentage = (value: number) => {
-        const valueParts = String(value * 100).split('.') // Ex 12.4912 == [ '12', '4912' ]
-
-        if ( valueParts.length === 1 ) return value * 100;
-        
-        valueParts[1] = valueParts[1].slice(0, 2);
-
-        return valueParts.join('.');
-    }
-
     const formatBalance = (value: number) => Math.abs(value).toFixed(2).replace('.', ',');
 
     return (
         <Container>
-            <Content color={ cardColor }>
+            <Content 
+                onPress={() => navigation.navigate('CardDetails', {
+                    card: item,
+                    color: cardColor
+                })}
+                color={ cardColor }
+            >
                 <TitleWrapper>
                     <CardTitle>{ item.title }</CardTitle> 
                 </TitleWrapper>
 
                 <BalanceWrapper color={ cardColor }>
-                    <BalanceSituation color={ cardColor }>{ item.currentValue > 0 ? '+' : '-' }</BalanceSituation>
+                    <BalanceSituation color={ cardColor }>{ item.currentValue >= 0 ? '+' : '-' }</BalanceSituation>
                     <BalanceValue>
-                        {formatBalance(item.currentValue)} ({formatPercentage(percentage)}%)
+                        {formatBalance(item.currentValue)} ({calculateCardPercentage(item)}%)
                     </BalanceValue>
                 </BalanceWrapper>
             </Content>

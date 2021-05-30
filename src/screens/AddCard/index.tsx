@@ -28,6 +28,7 @@ import { ICard, ICardType, ICardWithoutId } from '../../store/Cards/types';
 import CardsController from '../../store/Cards/controller';
 
 import generateId from '../../utils/generateId';
+import handleSetMoneyInput from '../../utils/handleSetMoneyInput';
 
 const AddCard: React.FC = () => {
     const navigation = useNavigation();
@@ -64,13 +65,6 @@ const AddCard: React.FC = () => {
         if ( value === 'a-revenue' ) setCardTypeLabel('Annual revenue');
         if ( value === 'm-revenue' ) setCardTypeLabel('Monthly revenue');
         if ( value === 'saving' ) setCardTypeLabel('Saving ');
-    }
-
-    const handleSetMoneyInput = (value: string, setter: (value: string) => void) => {
-        // TODO: Validate money input
-        if ( isNaN(Number(value)) ) return;
-
-        setter(value);
     }
 
     const handleDayChange = (value: string) => {

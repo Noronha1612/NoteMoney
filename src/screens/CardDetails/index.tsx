@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/core';
+import { ScrollView } from 'react-native-gesture-handler';
 import React from 'react';
 import { Feather } from '@expo/vector-icons';
 
@@ -24,11 +25,15 @@ import {
 } from './styles';
 import { colors } from '../../../styles/colors';
 import { calculateCardPercentage } from '../../utils/calculateCardPercentage';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const CardDetails: React.FC = () => {
     const navigation = useNavigation();
     const { card, color } = useRoute().params as { card: ICard, color: string };
+
+    const handleChangeBalance = (type: string) => {
+        navigation.goBack();
+        navigation.navigate('ChangeBalance', { card, type });
+    }
 
     return (
         <Container>
@@ -78,10 +83,10 @@ const CardDetails: React.FC = () => {
                 </CardTypeReferenceValueWrapper>
 
                 <ButtonsWrapper>
-                    <ActionButton activeOpacity={.6} color={ colors.green }>
+                    <ActionButton onPress={ () => handleChangeBalance('add') } activeOpacity={.6} color={ colors.green }>
                         <Feather name='plus' size={ 40 } color={ colors.white } />
                     </ActionButton>
-                    <ActionButton activeOpacity={.6} color={ colors.red }>
+                    <ActionButton onPress={ () => handleChangeBalance('remove') } activeOpacity={.6} color={ colors.red }>
                         <Feather name='minus' size={ 40 } color={ colors.white } />
                     </ActionButton>
                     <ActionButton activeOpacity={.6} color={ colors.shape }>
